@@ -1,0 +1,27 @@
+s = "the quick brown fox jumped over the lazy dog"
+a = 0
+e = 0
+i = 0
+o = 0
+u = 0
+pos = 0
+
+for letters in s: #number of cycles
+    if s[pos]=='a': #logic check
+        a+=1    #increment vowel a count
+    elif s[pos]=='e': #logic check
+        e+=1    #increment vowel a count
+    elif s[pos]=='i': #logic check
+        i+=1    #increment vowel a count
+    elif s[pos]=='o': #logic check
+        o+=1    #increment vowel a count
+    elif s[pos]=='u': #logic check
+        u+=1    #increment vowel a count
+    pos+=1
+#print ('a=', a)
+#print ('e=', e)
+#print ('i=', i)
+#print ('o=', o)
+#print ('u=', u)
+
+print ('Number of vowels:', a+e+i+o+u)
