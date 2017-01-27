@@ -1,0 +1,9 @@
+s = 'bob bob obob bobo'
+pos = 0
+bcount = 0
+
+for letters in s: #number of cycles
+    if s [pos:(pos+3)] == 'bob':
+        bcount+=1
+    pos+=1
+print ('Number of times bob occurs is: ',bcount)
