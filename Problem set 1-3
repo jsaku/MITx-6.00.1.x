@@ -1,0 +1,143 @@
+# -*- coding: utf-8 -*-
+"""
+Created on Thu Jan 26 16:53:02 2017
+
+@author: haruna
+"""
+
+#Assume s is a string of lower case characters.
+#Write a program that prints the longest substring of s in which the letters occur in alphabetical order. For example, if s = 'azcbobobegghakl', then your program should print
+#Longest substring in alphabetical order is: beggh
+#In the case of ties, print the first substring. For example, if s = 'abcbcd', then your program should print
+#Longest substring in alphabetical order is: abc
+
+#Test values and #Answers
+s = 'azcbobobegghakl' #beggh
+#s = 'ldrdmtgwliyimvjcnx' #dmt
+#s = 'fayjpqdjgx' #jpq
+#s = 'aqqtkzmetprxnfqnbsn' #aqqt
+#s = 'edsprheb' #ds
+#s = 'ppnwzgbrybctdu' #nwz
+#s = 'udywyhxl' #dy
+#s = 'jfvjqwwoxgckzix' #jqww
+#s = 'abcdefghijklmnopqrstuvwxyz' #abcdefghijklmnopqrstuvwxyz 
+#s = 'ewrrwimtunajuisab' #imtu
+#s = 'pgxijvsshfygbiisdgo' #biis
+#s = 'vyrwibywi' #vy
+#s = 'zyxwvutsrqponmlkjihgfedcba' #z
+#s = 'xzhunhrpqzpvgsttqztpzn' #gstt
+#s = 'tzmypfqnxolthdr' #tz
+#s = 'bugowcclj' #gow
+#s = 'eluvvmflpzluucyhro' #eluvv
+#s = 'dtkdshnydsrcrqilktl' #hny
+#s = 'mswgtrmwwbkuhpnahfpx' #msw
+#s = 'vgsmbwtv' #gs
+#s = 'nrjzursbia' #nr
+
+pos = 0 #primary index to increment string position
+endpos = 0  #ending string position. Stores pos value in a topscore scenario
+letter0 = 0 #first letter for alpha check
+letter1 = 0 #second letter for alpha check
+lettervalue = 0 #int 1-26 for a-z
+lettercycle = 0 #alternating control to determine whether current s[pos] being tested should be assigned to letter0 or letter1
+assignloop = True #controls alpha check loop
+currentscore = 0 #running total of alphabetical letters in current segment.
+topscore = 0 #ending score value. Stores currentscore when chain is broken.
+failcount = 0 #running count of failed alpha chains.
+
+for letters in s:
+    #primary alpha check to assign int to each letter. 
+    #this loop runs twice each iteration, no more no less.
+    #probably cleaner to use 'for' instead of 'while' but didn't know syntax for loop 2.
+    while pos < len(s) and assignloop is True: 
+        if s[pos] == 'a':
+            lettervalue = 1
+        elif s[pos] == 'b':
+            lettervalue = 2
+        elif s[pos] == 'c':
+            lettervalue = 3
+        elif s[pos] == 'd':
+            lettervalue = 4
+        elif s[pos] == 'e':
+            lettervalue = 5
+        elif s[pos] == 'f':
+            lettervalue = 6
+        elif s[pos] == 'g':
+            lettervalue = 7
+        elif s[pos] == 'h':
+            lettervalue = 8
+        elif s[pos] == 'i':
+            lettervalue = 9
+        elif s[pos] == 'j':
+            lettervalue = 10
+        elif s[pos] == 'k':
+            lettervalue = 11
+        elif s[pos] == 'l':
+            lettervalue = 12
+        elif s[pos] == 'm':
+            lettervalue = 13
+        elif s[pos] == 'n':
+            lettervalue = 14
+        elif s[pos] == 'o':
+            lettervalue = 15
+        elif s[pos] == 'p':
+            lettervalue = 16
+        elif s[pos] == 'q':
+            lettervalue = 17
+        elif s[pos] == 'r':
+            lettervalue = 18
+        elif s[pos] == 's':
+            lettervalue = 19
+        elif s[pos] == 't':
+            lettervalue = 20
+        elif s[pos] == 'u':
+            lettervalue = 21
+        elif s[pos] == 'v':
+            lettervalue = 22
+        elif s[pos] == 'w':
+            lettervalue = 23
+        elif s[pos] == 'x':
+            lettervalue = 24
+        elif s[pos] == 'y':
+            lettervalue = 25
+        elif s[pos] == 'z':
+            lettervalue = 26
+        else:
+            print ('dude how did you mess up entering alphas?')
+        
+        #assigns s[pos] to letter0 on first pass, then s[pos] to letter1 on second
+        if lettercycle == 0:
+            letter0 = lettervalue
+            lettercycle = 1 #toggles variable for second pass
+            pos += 1
+
+        elif lettercycle == 1:
+            letter1 = lettervalue
+            lettercycle = 0 #toggles back to set up for next pos and pos+1 iteration
+            assignloop = False
+        else:
+            print ('AlphaLoop error')
+        
+        #compare letter0 and letter1 for alphabetical sort.    
+        if (letter0 and letter1 != 0 and lettercycle == 0): #blocks evaluation for first pass before letter0 and letter1 are updated, AND partial passes where letter1 hasn't been updated yet.
+            #"success" block increments running score.
+            if (letter0 <= letter1):
+                currentscore += 1
+            #"fail" block
+            #checks if current score beats the existing topscore. Note instructions to return FIRST segment in the event of a tie.
+            elif (letter0 > letter1):
+                if currentscore > topscore:
+                    topscore = currentscore
+                    endpos = pos
+                currentscore = 0
+                failcount += 1
+        assignloop = True
+
+if failcount == 0: #zero failures, i.e. s is 100% alphabetical.
+    print ('Longest substring in alphabetical order is:', s)
+elif (failcount+1) == len(s): #total failures == length of s. 100% reverse alphabetical
+    print ('Longest substring in alphabetical order is:', s[0])
+elif failcount > 0: #normal failures. Outputs s[x:y] based on endpos and success chain count from topscore event.
+    print ('Longest substring in alphabetical order is:', s[(endpos-topscore-1):endpos])
+else:
+    print ('meowcat')
